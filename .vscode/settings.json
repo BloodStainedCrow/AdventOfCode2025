@@ -1,0 +1,22 @@
+{
+    "rust-analyzer.check.command": "clippy",
+    "rust-analyzer.check.allTargets": true,
+    "VsCodeTaskButtons.tasks": [
+        {
+            "label": "Build",
+            "task": "build",
+        },
+        {
+            "label": "Test",
+            "task": "test_all",
+        },
+        {
+            "label": "Bench",
+            "task": "bench_all",
+        }
+    ],
+    "[rust]": {
+        "editor.defaultFormatter": "rust-lang.rust-analyzer",
+        "editor.formatOnSave": true
+    }
+}
