@@ -36,24 +36,20 @@ fn parse(input: &str) -> Input {
 fn part1(input: &Input) -> String {
     const NUM_POS: u32 = 100;
 
-    let mut current_pos = 50;
+    let mut current_pos: u32 = 50;
 
     let mut times_zero = 0;
     for rot in input {
+        let num_clicks = rot.num_clicks % NUM_POS;
         match rot.dir {
             Dir::Left => {
-                for _ in 0..rot.num_clicks {
-                    if current_pos == 0 {
-                        current_pos = NUM_POS;
-                    }
-                    current_pos -= 1;
-                }
+                current_pos = current_pos
+                    .checked_sub(num_clicks)
+                    .unwrap_or_else(|| NUM_POS - (num_clicks - current_pos));
             }
             Dir::Right => {
-                for _ in 0..rot.num_clicks {
-                    current_pos += 1;
-                    current_pos %= NUM_POS;
-                }
+                current_pos += num_clicks;
+                current_pos %= NUM_POS;
             }
         }
 
@@ -69,30 +65,33 @@ fn part1(input: &Input) -> String {
 fn part2(input: &Input) -> String {
     const NUM_POS: u32 = 100;
 
-    let mut current_pos = 50;
+    let mut current_pos: u32 = 50;
 
     let mut times_zero = 0;
     for rot in input {
+        times_zero += rot.num_clicks / NUM_POS;
+        let num_clicks = rot.num_clicks % NUM_POS;
         match rot.dir {
             Dir::Left => {
-                for _ in 0..rot.num_clicks {
-                    if current_pos == 0 {
-                        current_pos = NUM_POS;
-                    }
-                    current_pos -= 1;
-                    if current_pos == 0 {
-                        times_zero += 1;
-                    }
+                current_pos = current_pos.checked_sub(num_clicks).map_or_else(
+                    || {
+                        if current_pos != 0 {
+                            times_zero += 1;
+                        }
+                        NUM_POS - (num_clicks - current_pos)
+                    },
+                    |v| v,
+                );
+                if current_pos == 0 {
+                    times_zero += 1;
                 }
             }
             Dir::Right => {
-                for _ in 0..rot.num_clicks {
-                    current_pos += 1;
-                    current_pos %= NUM_POS;
-                    if current_pos == 0 {
-                        times_zero += 1;
-                    }
+                current_pos += num_clicks;
+                if current_pos >= NUM_POS {
+                    times_zero += 1;
                 }
+                current_pos %= NUM_POS;
             }
         }
     }
