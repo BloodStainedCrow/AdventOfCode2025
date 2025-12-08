@@ -19,7 +19,7 @@ fn parse(input: &str) -> Input {
 
 #[aoc(day8, part1)]
 fn part1(input: &Input) -> String {
-    const NUM_CONNS: usize = 1000;
+    const NUM_CONNS: usize = 10;
     let mut graph = UnGraph::new_undirected();
     for input in input {
         graph.add_node(*input);
@@ -28,8 +28,7 @@ fn part1(input: &Input) -> String {
     let edges_by_length = graph
         .node_indices()
         .cartesian_product(graph.node_indices())
-        .filter(|(a, b)| a != b)
-        .filter(|(a, b)| !graph.contains_edge(*a, *b))
+        .filter(|(a, b)| a < b)
         .sorted_by_key(|(start, end)| {
             let start = graph.node_weight(*start).unwrap();
             let end = graph.node_weight(*end).unwrap();
@@ -110,6 +109,6 @@ mod tests {
 
     #[test]
     fn part2_example() {
-        assert_eq!(part2(&parse(EXAMPLE)), "40");
+        assert_eq!(part2(&parse(EXAMPLE)), "25272");
     }
 }
