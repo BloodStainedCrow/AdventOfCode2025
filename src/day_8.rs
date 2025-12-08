@@ -68,7 +68,7 @@ fn part2(input: &Input) -> String {
     let edges_by_length = graph
         .node_indices()
         .cartesian_product(graph.node_indices())
-        .filter(|(a, b)| a != b)
+        .filter(|(a, b)| a < b)
         .filter(|(a, b)| !graph.contains_edge(*a, *b))
         .sorted_by_key(|(start, end)| {
             let start = graph.node_weight(*start).unwrap();
