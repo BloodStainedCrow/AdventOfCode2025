@@ -6,6 +6,7 @@ edition = "2024"
 [dependencies]
 aoc-runner = "0.3.0"
 aoc-runner-derive = "0.3.0"
+good_lp = { version = "1.14.2", features = ["microlp"], default-features = false }
 itertools = "0.14.0"
 petgraph = "0.8.3"
 
